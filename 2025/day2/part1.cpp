@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <array>
 #include <iostream>
 #include <vector>
@@ -5,7 +6,8 @@
 #include <fstream>
 
 std::vector<std::string> split(std::string s, std::string del);
-bool sequenceRepeatedTwice(int number);
+bool sequenceRepeatedTwice(unsigned long long number);
+bool sequenceRepeatedAtLeastTwice(unsigned long long number);
 
 int main (int argc, char *argv[]) {
   std::fstream file("input");
@@ -27,15 +29,26 @@ int main (int argc, char *argv[]) {
 
   //convert the even smaller strings into numbers
   //the start of a range is at even indexes, the end of a range is at the odd.
-  std::vector<int> ranges;
+  std::vector<std::array<unsigned long, 2>> ranges;
   for (std::vector<std::string> stringvector : splitranges) {
+    std::array<unsigned long, 2> range;
     int i = 0;
-    std::array<int, 2> range;
     for (std::string s : stringvector) {
-      ranges.push_back(std::stoi(s));
+      if (i>=2) break;
+      range[i] = std::stoull(s);
+      i++;
+    }
+    if (i == 2) ranges.push_back(range);
+  }
+  
+  unsigned long long sum = 0;
+  for (std::array<unsigned long, 2> range : ranges) {
+    for (unsigned long long i = range[0]; i <= range[1]; i++) {
+      if (i < 0) std::cout << i << std::endl;
+      if (sequenceRepeatedAtLeastTwice(i)) sum += i;
     }
   }
-
+  std::cout << sum << std::endl;
   return 0;
 }
 
@@ -53,14 +66,25 @@ std::vector<std::string> split(std::string s, std::string del) {
   return tokens;
 }
 
-bool sequenceRepeatedTwice(int number) {
+bool sequenceRepeatedTwice(unsigned long long number) {
   std::string fullString = std::to_string(number);
   int fullLength = fullString.length();
   if(fullLength % 2 != 0) return false;
-
-  std::string firstHalf = fullString.substr(0, fullLength/2 - 1);
-  std::string lastHalf  = fullString.substr(fullLength/2, fullLength - 1);
+  
+  int half = fullLength/2;
+  std::string firstHalf = fullString.substr(0, half);
+  std::string lastHalf  = fullString.substr(half);
   return firstHalf == lastHalf;
+}
+
+bool sequenceRepeatedAtLeastTwice(unsigned long long number) {
+  std::string fullString= std::to_string(number);
+  for (int i = 0; i < fullString.length(); i++) {
+    if (fullString.substr(0, i) == fullString.substr(i, i)) {
+      return true;
+    }
+  }
+  return false;
 }
 
 

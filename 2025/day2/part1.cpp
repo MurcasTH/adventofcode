@@ -1,4 +1,3 @@
-#include <algorithm>
 #include <array>
 #include <iostream>
 #include <vector>
@@ -76,15 +75,28 @@ bool sequenceRepeatedTwice(unsigned long long number) {
   std::string lastHalf  = fullString.substr(half);
   return firstHalf == lastHalf;
 }
-
+// 112233112233112233
 bool sequenceRepeatedAtLeastTwice(unsigned long long number) {
-  std::string fullString= std::to_string(number);
-  for (int i = 0; i < fullString.length(); i++) {
-    if (fullString.substr(0, i) == fullString.substr(i, i)) {
-      return true;
+  std::string fullString = std::to_string(number);
+  int stringLength = fullString.length();
+  
+  for (int length = 1; length <= stringLength/2; length++) {
+    if (stringLength % length != 0) continue;
+    
+    int repeats = stringLength / length;
+    if (repeats < 2) continue;
+
+    std::string pattern = fullString.substr(0, length);
+    bool isRepeatable = true;
+    for(int i = 1; i < repeats; i++) {
+      if(fullString.substr(length*i, length) != pattern) {
+        isRepeatable = false;
+        break;
+      }
     }
+    if (isRepeatable) return true;
   }
   return false;
-}
+ }
 
 

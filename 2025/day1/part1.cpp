@@ -42,7 +42,7 @@ int main (int argc, char *argv[]) {
       default:
         std::cerr << "instruction not viable\n";
     }
-    std::cout << dialValue << ": " << instruction.direction << instruction.value << std::endl;
+    //std::cout << dialValue << ": " << instruction.direction << instruction.value << std::endl;
   }
 
   std::cout << zerosCount << std::endl;

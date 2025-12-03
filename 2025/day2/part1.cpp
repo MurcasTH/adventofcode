@@ -78,13 +78,13 @@ bool sequenceRepeatedTwice(unsigned long long number) {
 }
 
 bool sequenceRepeatedAtLeastTwice(unsigned long long number) {
-  std::string fullString= std::to_string(number);
+  std::string fullString = std::to_string(number);
+  int fullStringLength = fullString.length();
+  bool entireStringRepeats = false;
+  
   for (int i = 0; i < fullString.length(); i++) {
-    if (fullString.substr(0, i) == fullString.substr(i, i)) {
-      return true;
-    }
+    
   }
-  return false;
 }
 
 
